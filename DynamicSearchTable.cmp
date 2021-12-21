@@ -1,0 +1,29 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    <aura:attribute name="lblnms" type="List" />
+    <aura:attribute name="Rstdtls" type="List" />
+    <aura:attribute name="fddtls" type="Object[]" />
+    
+    <div class="slds-page-header slds-scrollable custom-background" style="width:1167px;">
+        <table class="slds-table slds-table--bordered slds-table--cell-buffer slds-table--striped " bgcolor="#BED8F2" >
+            
+            <thead >  
+                <aura:iteration items="{!v.lblnms}" var="fielddts" indexVar="index">
+                    <th >{!fielddts}</th>
+                </aura:iteration>
+            </thead>
+            
+              <tbody>
+                  <aura:iteration items="{!v.fddtls}" var="fielddt" indexVar="index"> <!-- records iteration -->
+                      
+                                <aura:iteration items="{!v.Rstdtls}" var="Resultdtl" indexVar="index"> <!-- apiname iteration -->
+                                     <td >
+                                        <c:Searchdata columName="{!Resultdtl}" values="{!fielddt}"/> 
+                                    </td>
+                                    
+                                </aura:iteration>
+                      <tr></tr>
+                  </aura:iteration>
+            </tbody>
+        </table>
+    </div>
+</aura:component>

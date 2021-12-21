@@ -1,0 +1,87 @@
+<aura:component Controller="DynamicSearchController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+ <aura:attribute name="picklistValues" type="DynamicSearchController.ObjLabelAndAPIWrapper" /> 
+ <aura:attribute name="sObjectfieldlist" type="DynamicSearchController.FldsLabelAndAPIWrapper" />
+ <aura:attribute name="rstfieldlist" type="DynamicSearchController.FldsLabelAndAPIWrapper" />
+ <aura:attribute name="selectedObject" type="String" />
+ <aura:attribute name="fieldsandvalue" type="Map"  default="{}"/> 
+ <aura:attribute name="mycolumns" type="List"/>
+ <aura:attribute name="apiNames" type="List"/>
+ <aura:attribute name="sobjlst" type="Object[]" />
+ <aura:attribute name="display" type="Boolean" default="false" />
+ <aura:handler name="init" value="{!this}" action="{!c.doInit}" />  
+    
+    
+ <div class="slds-page-header custom-background" style="min-height:500px; min-width:auto;">
+    <lightning:tile label="Dynamic Search">
+        <aura:set attribute="media">
+            <lightning:icon iconName="custom:custom18"/>
+        </aura:set>
+        <dl class="slds-dl_horizontal">
+            <dt class="slds-dl_horizontal__label">
+               <span><b>Dynamic Search</b></span>
+            </dt>
+        </dl>
+	 </lightning:tile>
+    
+    <aura:if isTrue="{!v.picklistValues!=null}">
+     <div class="slds-align_absolute-center" >
+            <lightning:layout>
+                <lightning:layoutItem flexibility="auto" padding="around-small">
+                    <div class="custom-box">
+                        <lightning:select label="SObject Name" aura:id="select" name="select" value="{!v.selectedObject}" onchange="{!c.onSelectingSobj}">       
+                            <option value="">select here</option>
+                            <aura:iteration items="{!v.picklistValues}" var="item">
+                                <option value="{!item.Name}">
+                                    {!item.Name}
+                                </option>
+                            </aura:iteration>
+                        </lightning:select>
+                    </div>
+                    
+                    
+                </lightning:layoutItem> 
+            </lightning:layout>    
+        </div>
+    </aura:if>
+     
+     <aura:if isTrue="{!v.sObjectfieldlist!=null}">
+            <div class="slds-box ">  
+            <lightning:layout multipleRows="true" >
+                    
+                    <aura:iteration items="{!v.sObjectfieldlist}" var="fieldnm" indexVar="index">       
+                        <lightning:layoutItem size="6" flexibility="auto" >
+                            <table>
+                                <td style="width:80px;">  {!fieldnm.Name}:</td>
+                                <td>  
+                                    <input style="width:380px;" data-selected-Index="{!index}" oninput="{!c.textChange}"  type="text"  name="{!fieldnm.APIName}" value="{!v.fieldvalue}" class="slds-input slds-m-top--medium"  />
+                                </td>
+                                
+                            </table>
+                        </lightning:layoutItem>
+                    </aura:iteration>
+                
+            </lightning:layout>
+            
+            <lightning:button variant="brand" label="Search" class="slds-align_absolute-center" onclick="{!c.onSearch}" />
+    
+            </div> 
+             <div >
+                
+               <aura:if isTrue="{!v.display}">
+                
+                        
+        			
+                  <c:DynamicSearchTable  lblnms="{!v.mycolumns}" fddtls="{!v.sobjlst}" Rstdtls="{!v.apiNames}" /> 
+                
+                  <!--   <lightning:datatable data="{! v.sobjlst }"
+                         columns="{! v.mycolumns }"
+                         keyField="id"
+                         hideCheckboxColumn="true"/>-->
+                 
+                    
+                </aura:if> 
+            </div>
+            
+        </aura:if> 
+</div>
+</aura:component>
